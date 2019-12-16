@@ -28,32 +28,31 @@ import os
 def main():
     #serialnum = '0ABC1234567D8'
     ssid="Mavic-"
-    rando=str(RandMAC())[8:]
-    print(rando)
-    ssids = sys.argv[2:]       #Network name here
+    randomSuffix=str(RandMAC())[8:]
+    print(randomSuffix)
+	
     iface = sys.argv[1]         #Interface name here
     frames =[]
 
-    for netSSID in ssids:
-        print netSSID
-        dot11 = Dot11(type=0, subtype=8, addr1='ff:ff:ff:ff:ff:ff',addr2='60:60:1f'+rando, addr3='60:60:1f'+rando)
-        beacon = Dot11Beacon(cap='short-slot+ESS+privacy+short-preamble')
-        essid = Dot11Elt(ID='SSID',info=ssid, len=len(ssid))
-        rates=Dot11Elt(ID='Rates',info='\x82\x84\x8b\x0c\x12\x96\x18\x24')  #supported rates
-        dsset=Dot11Elt(ID='DSset',info='\x0b')  #current channel
-        tim=Dot11Elt(ID='TIM',info='\x00\x01\x00\x00')  #traffic indication map
-		country=Dot11Elt(ID='Country Info',info='\x55\x53\x00\x01\x0b,\x1e') #country information
-		erpinfo=Dot11Elt(ID='ERPinfo',info='0x00')  #erp information
-		esrates=Dot11Elt(ID='ESRates',info='\x30\x48\x60\x6c') #extended supported rates
-		htcap=Dot11Elt(ID='HT Capability',info='\xac\x01\x02\xff\xff\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')  #HT Capabilities
-        htinfo=Dot11Elt(ID='HT Info',info='\x0b\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00') #HT Information		
-		rsn = Dot11Elt(ID='RSNinfo', info='\x01\x00\x00\x0f\xac\x04\x01\x00\x00\x0f\xac\x04\x01\x00\x00\x0f\xac\x02\x0c\x00') #RSN Information	        	          
-        vendorsp = Dot11Elt(ID='vendor', info='\x00\x50\xf2\x02\x01\x01\x00\x00\x03\xa4\x00\x00\x27\xa4\x00\x00\x42\x43\x5e\x00\x62\x32\x2f\x00')   #Vendor Specific: Microsoft WMM/WME Paramater Element
-		vendordrone = Dot11Elt(ID='vendor', info='\x26\x37\x12\x58\x62\x13\x10\x01\x5a\x00\xd7\x0f\x44\x72\x6f\x6e\x65\x49\x44\x20\x69\x73\x20\x63\x72\x61\x70\x21\xb0\x78\x5b\x00\x29\xeb\xc2\xfe\xf6\x00\xd3\x00\xd8\x00\xab\x00\x3b\x00\xc0\x00\xf4\x00\x40\x00\x0c\x05\x3c\x00\x30\x79\x2f\x01\x10\x06\x31\x39\x35\x37\x34\x31\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')   #fixedDroneID
-        frame = RadioTap()/dot11/beacon/essid/rates/dsset/tim/country/erpinfo/esrates/htcap/htinfo/rsn/vendorsp/vendordrone
-        #print "SSID=%-20s   %r"%(netSSID,frame)
-        frames.append(frame)
-    sendp(frames, iface=iface, inter=0.500 if len(frames)<10 else 0, loop=1)
+    print(ssid)
+    dot11 = Dot11(type=0, subtype=8, addr1='ff:ff:ff:ff:ff:ff',addr2='60:60:1f'+randomSuffix, addr3='60:60:1f'+randomSuffix)
+    beacon = Dot11Beacon(cap='short-slot+ESS+privacy+short-preamble')
+    essid = Dot11Elt(ID='SSID',info=ssid, len=len(ssid))
+    rates=Dot11Elt(ID='Rates',info='\x82\x84\x8b\x0c\x12\x96\x18\x24')  #supported rates
+    dsset=Dot11Elt(ID='DSset',info='\x0b')  #current channel
+    tim=Dot11Elt(ID='TIM',info='\x00\x01\x00\x00')  #traffic indication map
+    country=Dot11Elt(ID=7,info='\x55\x53\x00\x01\x0b,\x1e') #country information
+    erpinfo=Dot11Elt(ID='ERPinfo',info='0x00')  #erp information
+    esrates=Dot11Elt(ID='ESRates',info='\x30\x48\x60\x6c') #extended supported rates
+    htcap=Dot11Elt(ID=45,info='\xac\x01\x02\xff\xff\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')  #HT Capabilities
+    htinfo=Dot11Elt(ID=61,info='\x0b\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00') #HT Information		
+    rsn = Dot11Elt(ID='RSNinfo', info='\x01\x00\x00\x0f\xac\x04\x01\x00\x00\x0f\xac\x04\x01\x00\x00\x0f\xac\x02\x0c\x00') #RSN Information	        	          
+    vendorsp = Dot11Elt(ID='vendor', info='\x00\x50\xf2\x02\x01\x01\x00\x00\x03\xa4\x00\x00\x27\xa4\x00\x00\x42\x43\x5e\x00\x62\x32\x2f\x00')   #Vendor Specific: Microsoft WMM/WME Paramater Element
+    vendordrone = Dot11Elt(ID='vendor', info='\x26\x37\x12\x58\x62\x13\x10\x01\x5a\x00\xd7\x0f\x44\x72\x6f\x6e\x65\x49\x44\x20\x69\x73\x20\x63\x72\x61\x70\x21\xb0\x78\x5b\x00\x29\xeb\xc2\xfe\xf6\x00\xd3\x00\xd8\x00\xab\x00\x3b\x00\xc0\x00\xf4\x00\x40\x00\x0c\x05\x3c\x00\x30\x79\x2f\x01\x10\x06\x31\x39\x35\x37\x34\x31\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')   #fixedDroneID
+    frame = RadioTap()/dot11/beacon/essid/rates/dsset/tim/country/erpinfo/esrates/htcap/htinfo/rsn/vendorsp/vendordrone
+	
+    #print "SSID=%-20s   %r"%(ssid,frame)
+    sendp(frame, iface=iface, inter=0.500, loop=1)
     
 if __name__=="__main__":
     main()
