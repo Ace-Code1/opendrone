@@ -57,7 +57,7 @@ def main():
     print("\nHexDump of frame:")
     hexdump(frame)
 
-    sendp(frame, iface=iface, inter=0.500, loop=1)
+    sendp(frame, iface=iface, inter=0.100, loop=1)
     
 if __name__=="__main__":
     main()
