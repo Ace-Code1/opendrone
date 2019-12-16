@@ -26,16 +26,18 @@ import random
 import os
 
 def main():
-    #serialnum = '0ABC1234567D8'
-    ssid="Mavic-"
-    randomSuffix=str(RandMAC())[8:]
-    print(randomSuffix)
-	
-    iface = sys.argv[1]         #Interface name here
-    frames =[]
 
-    print(ssid)
-    dot11 = Dot11(type=0, subtype=8, addr1='ff:ff:ff:ff:ff:ff',addr2='60:60:1f'+randomSuffix, addr3='60:60:1f'+randomSuffix)
+    serialnum = '0ABC1234567D8'
+    ssid="Mavic-"+serialnum
+    randomMACPrefix='60:60:1f'
+    randomMACPostfix=str(RandMAC())[8:]
+    djiMAC=randomMACPrefix+randomMACPostfix	
+    iface = sys.argv[1]         #Interface name here
+
+    print('MAC-Adres: '+djiMAC)
+    print('SSID: '+ssid)
+	
+    dot11 = Dot11(type=0, subtype=8, addr1='ff:ff:ff:ff:ff:ff',addr2=djiMAC, addr3=djiMAC)
     beacon = Dot11Beacon(cap='short-slot+ESS+privacy+short-preamble')
     essid = Dot11Elt(ID='SSID',info=ssid, len=len(ssid))
     rates=Dot11Elt(ID='Rates',info='\x82\x84\x8b\x0c\x12\x96\x18\x24')  #supported rates
@@ -51,7 +53,10 @@ def main():
     vendordrone = Dot11Elt(ID='vendor', info='\x26\x37\x12\x58\x62\x13\x10\x01\x5a\x00\xd7\x0f\x44\x72\x6f\x6e\x65\x49\x44\x20\x69\x73\x20\x63\x72\x61\x70\x21\xb0\x78\x5b\x00\x29\xeb\xc2\xfe\xf6\x00\xd3\x00\xd8\x00\xab\x00\x3b\x00\xc0\x00\xf4\x00\x40\x00\x0c\x05\x3c\x00\x30\x79\x2f\x01\x10\x06\x31\x39\x35\x37\x34\x31\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')   #fixedDroneID
     frame = RadioTap()/dot11/beacon/essid/rates/dsset/tim/country/erpinfo/esrates/htcap/htinfo/rsn/vendorsp/vendordrone
 	
-    #print "SSID=%-20s   %r"%(ssid,frame)
+    frame.show()
+    print("\nHexDump of frame:")
+    hexdump(frame)
+
     sendp(frame, iface=iface, inter=0.500, loop=1)
     
 if __name__=="__main__":
