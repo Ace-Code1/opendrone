@@ -40,15 +40,14 @@ def floatToReversedIntArray(floatvalue):
 def hexArrayToFloat(hexArray):
     floatValue=0
     floatValue=int(hexArray[3])<<24
-    floatValue=floatValue+(int(hexArray[2])<<16)
-    floatValue=floatValue+(int(hexArray[1])<<8)	
-    floatValue=floatValue+int(hexArray[0])
-    floatValue=math.degrees(floatValue/10000000)
+    floatValue+=(int(hexArray[2])<<16)
+    floatValue+=(int(hexArray[1])<<8)	
+    floatValue+=int(hexArray[0])
+    floatValue=math.degrees(float(floatValue)/10000000)
     return floatValue
 
 
 def main():
-    
     #-----------------------------------try to encode longitude
     longitude=113.963371
     latitude=22.54201
