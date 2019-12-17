@@ -30,7 +30,6 @@ import binascii
 
 def floatToReversedIntArray(floatvalue):
     radiansint=int(math.radians(floatvalue)*10000000)
-    print(radiansint)
     char1 = (radiansint>>24) & 0xff
     char2 = (radiansint>>16) & 0xff
     char3 = (radiansint>>8) & 0xff
