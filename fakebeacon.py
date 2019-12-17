@@ -83,7 +83,7 @@ def main():
     droneid+='\x00\x00'+serialnum  #serialnumber 16bytes long leading \x00 -> 'DroneID is crap?'
     array=floatToReversedIntArray(longitude)
     droneid+=chr(array[0])+chr(array[1])+chr(array[2])+chr(array[3]) #longitude (backwards) '\xb0\x78\x5b\x00'
-	array=floatToReversedIntArray(latitude)
+    array=floatToReversedIntArray(latitude)
     droneid+=chr(array[0])+chr(array[1])+chr(array[2])+chr(array[3]) #latitude (backwards) '\x29\xeb\xc2\xfe'
     droneid+=chr(250)+'\x00' #altitude
     droneid+=chr(27)+'\x00' #height
@@ -93,9 +93,9 @@ def main():
     droneid+=chr(192)+'\x00' #pitch
     droneid+=chr(244)+'\x00' #roll
     droneid+=chr(64)+'\x00' #yaw
-	array=floatToReversedIntArray(longitude_home)
+    array=floatToReversedIntArray(longitude_home)
     droneid+=chr(array[0])+chr(array[1])+chr(array[2])+chr(array[3]) #longitude_home (backwards) '\x0c\x05\x3c\x00'
-	array=floatToReversedIntArray(latitude_home)
+    array=floatToReversedIntArray(latitude_home)
     droneid+=chr(array[0])+chr(array[1])+chr(array[2])+chr(array[3]) #latitude_home (backwards) '\x30\x79\x2f\x01'
     droneid+='\x10' #product_type
     droneid+='\x06' #uuid length
